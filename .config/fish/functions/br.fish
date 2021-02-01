@@ -1,0 +1,1 @@
+/home/razi/.local/share/broot/launcher/fish/br.fish
