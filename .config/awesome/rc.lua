@@ -115,7 +115,7 @@ local modkey1      = "Control"
 
 -- personal variables
 --change these variables if you want
-local browser1          = "vivaldi-stable"
+local browser1          = "google-chrome-stable"
 local browser2          = "firefox"
 local browser3          = "chromium -no-default-browser-check"
 local editor            = os.getenv("EDITOR") or "nvim"
