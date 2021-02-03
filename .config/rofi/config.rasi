@@ -1,0 +1,8 @@
+configuration {
+ modi: "window,drun,ssh,combi";
+ theme: "razi";
+ font: "SauceCodePro Nerd Font Mono 28";
+ combi-modi: "window,drun,ssh";
+ terminal: "alacritty";
+ ssh-client: "ssh";
+}
