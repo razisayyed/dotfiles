@@ -98,6 +98,10 @@ theme.titlebar_maximized_button_focus_active    = theme.confdir .. "/icons/title
 
 local markup = lain.util.markup
 
+-- Keybaord Layout
+mykeyboardlayout = awful.widget.keyboardlayout(z)
+
+
 -- Textclock
 os.setlocale(os.getenv("LANG")) -- to localize the clock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
@@ -117,7 +121,7 @@ theme.cal = lain.widget.cal({
 -- Weather
 local weathericon = wibox.widget.imagebox(theme.widget_weather)
 theme.weather = lain.widget.weather({
-    city_id = 2803138, -- placeholder (Belgium)
+    city_id = 6254930, -- placeholder (Belgium)
     notification_preset = { font = "Noto Sans Mono Medium 10", fg = theme.fg_normal },
     weather_na_markup = markup.fontfg(theme.font, "#eca4c4", "N/A "),
     settings = function()
@@ -314,6 +318,7 @@ function theme.at_screen_connect(s)
             --mailicon,
             --mail.widget,
             --mpdicon,
+            mykeyboardlayout,
             theme.mpd.widget,
             netdownicon,
             netdowninfo,
