@@ -96,14 +96,15 @@ awful.spawn.with_shell(
 -- {{{ Variable definitions
 
 local themes = {
-    "multicolor",		-- 1
-    "powerarrow",      		-- 2
-    "powerarrow-blue",	 	-- 3
-    "blackburn",		-- 4
+    "multicolor",       -- 1
+    "powerarrow",       -- 2
+    "powerarrow-blue",  -- 3
+    "blackburn",        -- 4
+    "powerarrow2",      -- 5
 }
 
 -- choose your theme here
-local chosen_theme = themes[1]
+local chosen_theme = themes[2]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -128,12 +129,18 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
+-- awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
+awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
+--awful.util.tagnames = {  " ", " ", " ", " ", " ", " ", " ", " ", " ", " "  }
+--awful.util.tagnames = { "", "DEV", "SYS", "", "5", "6", "7", "8", "9" }
+
+
+
 -- Use this : https://fontawesome.com/cheatsheet
---awful.util.tagnames = { "", "", "", "", "" }
+--awful.util.tagnames = { """, "", "", "", "" }
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -897,109 +904,110 @@ root.keys(globalkeys)
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-                     size_hints_honor = false
-     }
+    { 
+        rule = { },
+        properties = { 
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_normal,
+            focus = awful.client.focus.filter,
+            raise = true,
+            keys = clientkeys,
+            buttons = clientbuttons,
+            screen = awful.screen.preferred,
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+            size_hints_honor = false
+        }
     },
 
     -- Titlebars
-    { rule_any = { type = { "dialog", "normal" } },
-      properties = { titlebars_enabled = false } },
-          -- Set applications to always map on the tag 2 on screen 1.
-    --{ rule = { class = "Subl3" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
+    { 
+        rule_any = { type = { "dialog", "normal" } },
+        properties = { 
+            titlebars_enabled = false 
+        } 
+    },
+
+    -- Specific Apps
+    { 
+        rule = { class = "Geany"},
+        except = { type = "dialog" },
+        properties = { screen = 1, tag = awful.util.tagnames[6], switchtotag = true, maximized = true, floating = false } 
+    },
+
+    { 
+        rule_any = { class = { 'Google-chrome', "firefox" } },
+        properties = { screen = 1, tag = awful.util.tagnames[7], switchtotag = true } 
+    },
+
+    { 
+        rule = { class = "Code" },
+        properties = { screen = 1, tag = awful.util.tagnames[8], switchtotag = true, fullscreen = true }
+    },
+
+    { 
+        rule = { class = "jetbrains-pycharm" },
+        except = { type = "dialog" },
+        properties = { screen = 1, tag = awful.util.tagnames[9], switchtotag = true, fullscreen = true }
+    },
 
 
-    -- Set applications to always map on the tag 1 on screen 1.
-    -- find class or role via xprop command
-    --{ rule = { class = browser2 },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
+    -- Maximized Apps
+    { 
+        rule = { class = "Gimp*", role = "gimp-image-window" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = browser1 },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
+    {
+        rule_any = {
+            class = {
+                mediaplayer,
+                "vlc"
+            }
+        },
+        properties = { maximized = true }
+    },
 
-    --{ rule = { class = "Vivaldi-stable" },
-        --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true } },
+    --[[
+    { 
+        rule = { class = "Gnome-disks" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = "Chromium" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
+    { 
+        rule = { class = "inkscape" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = "Opera" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1],switchtotag = true  } },
+    { 
+        rule = { class = mediaplayer },
+        properties = { maximized = true } 
+    },
 
-    -- Set applications to always map on the tag 2 on screen 1.
-    --{ rule = { class = "Subl3" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2],switchtotag = true  } },
+    { 
+        rule = { class = "vlc" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = editorgui },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
+    { 
+        rule = { class = "VirtualBox Manager" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = "Brackets" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
+    { 
+        rule = { class = "VirtualBox Machine" },
+        properties = { maximized = true } 
+    },
 
-    --{ rule = { class = "Code" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
+    { 
+        rule = { class = "Vivaldi-stable" },
+        properties = { maximized = false, floating = false } 
+    },
 
-    --    { rule = { class = "Geany" },
-         --  properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-
-    -- Set applications to always map on the tag 3 on screen 1.
-    --{ rule = { class = "Inkscape" },
-        --properties = { screen = 1, tag = awful.util.tagnames[3], switchtotag = true  } },
-
-    -- Set applications to always map on the tag 4 on screen 1.
-    --{ rule = { class = "Gimp" },
-        --properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = true  } },
-
-    -- Set applications to always map on the tag 5 on screen 1.
-    --{ rule = { class = "Meld" },
-        --properties = { screen = 1, tag = awful.util.tagnames[5] , switchtotag = true  } },
-
-
-    -- Set applications to be maximized at startup.
-    -- find class or role via xprop command
-
-    { rule = { class = editorgui },
-          properties = { maximized = true } },
-
-    { rule = { class = "Geany" },
-          properties = { maximized = false, floating = false } },
-
-    { rule = { class = "Gimp*", role = "gimp-image-window" },
-          properties = { maximized = true } },
-
-    { rule = { class = "Gnome-disks" },
-          properties = { maximized = true } },
-
-    { rule = { class = "inkscape" },
-          properties = { maximized = true } },
-
-    { rule = { class = mediaplayer },
-          properties = { maximized = true } },
-
-    { rule = { class = "Vlc" },
-          properties = { maximized = true } },
-
-    { rule = { class = "VirtualBox Manager" },
-          properties = { maximized = true } },
-
-    { rule = { class = "VirtualBox Machine" },
-          properties = { maximized = true } },
-
-    { rule = { class = "Vivaldi-stable" },
-          properties = { maximized = false, floating = false } },
-
-    { rule = { class = "Vivaldi-stable" },
-          properties = { callback = function (c) c.maximized = false end } },
+    { 
+        rule = { class = "Vivaldi-stable" },
+        properties = { callback = function (c) c.maximized = false end } 
+    },
+    --]]
 
     --IF using Vivaldi snapshot you must comment out the rules above for Vivaldi-stable as they conflict
 --    { rule = { class = "Vivaldi-snapshot" },
@@ -1008,65 +1016,73 @@ awful.rules.rules = {
 --    { rule = { class = "Vivaldi-snapshot" },
 --          properties = { callback = function (c) c.maximized = false end } },
 
-    { rule = { class = "Xfce4-settings-manager" },
-          properties = { floating = false } },
-
-
-
-
-
+    { 
+        rule = { class = "Xfce4-settings-manager" },
+        properties = { floating = false } 
+    },
 
     -- Floating clients.
-    { rule_any = {
-        instance = {
-          "DTA",  -- Firefox addon DownThemAll.
-          "copyq",  -- Includes session name in class.
-        },
-        class = {
-          "Arandr",
-          "Arcolinux-welcome-app.py",
-          "Blueberry",
-          "Galculator",
-          "Gnome-font-viewer",
-          "Gpick",
-          "Imagewriter",
-          "Font-manager",
-          "Kruler",
-          "MessageWin",  -- kalarm.
-          "arcolinux-logout",
-          "Peek",
-          "Skype",
-          "System-config-printer.py",
-          "Sxiv",
-          "Unetbootin.elf",
-          "Wpa_gui",
-          "pinentry",
-          "veromix",
-          "xtightvncviewer",
-          "Xfce4-terminal"},
+    { 
+        rule_any = {
+            instance = {
+                "DTA",  -- Firefox addon DownThemAll.
+                "copyq",  -- Includes session name in class.
+            },
+            class = {
+                "TeamViewer",
+                "Arandr",
+                "Arcolinux-welcome-app.py",
+                "Blueberry",
+                "Galculator",
+                "Gnome-font-viewer",
+                "Gpick",
+                "Imagewriter",
+                "Font-manager",
+                "Kruler",
+                "MessageWin",  -- kalarm.
+                "Nm-connection-editor",
+                "arcolinux-logout",
+                "Peek",
+                "Skype",
+                "System-config-printer.py",
+                "Sxiv",
+                "Unetbootin.elf",
+                "Wpa_gui",
+                "pinentry",
+                "veromix",
+                "xtightvncviewer",
+                "Xfce4-appfinder",
+                "Xfce4-terminal"
+            },
 
-        name = {
-          "Event Tester",  -- xev.
-        },
-        role = {
-          "AlarmWindow",  -- Thunderbird's calendar.
-          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-          "Preferences",
-          "setup",
-        }
-      }, properties = { floating = true }},
+            name = {
+                "Event Tester",  -- xev.
+            },
 
-          -- Floating clients but centered in screen
-    { rule_any = {
-       	class = {
-       		"Polkit-gnome-authentication-agent-1"
-				},
-				},
+            role = {
+                "AlarmWindow",  -- Thunderbird's calendar.
+                "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+                "Preferences",
+                "setup",
+            }
+        }, 
+        properties = { floating = true }
+    },
+
+    -- Floating clients but centered in screen
+    { 
+        rule_any = {
+            class = {
+                "Polkit-gnome-authentication-agent-1"
+            },
+        },
       	properties = { floating = true },
-	      	callback = function (c)
+	    callback = function (c)
     		  awful.placement.centered(c,nil)
-       		end }
+        end 
+    }
 }
+
 -- }}}
 
 -- {{{ Signals
